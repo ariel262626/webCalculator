@@ -1,6 +1,7 @@
 1. Installations:
     npm install mocha
-
+    npm install express
+    npm install body-parser
 
 2. To run currency-calculator:
 run the commands: 
