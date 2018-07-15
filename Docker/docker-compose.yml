@@ -2,31 +2,33 @@ version: '3.1'
 
 services:
   
-  currency-calculator:
-    image: currency-calculator
-    ports: ["4000:3000"]
+  calculate:
+    build: .
    
   redis:
     image: redis:alpine
-    container_name: redis
-    ports: ["6379"]
   
   user-service:
     image: webdevtoolsandtech/user-service
-    ports: ["80"]
     environment:
-      REDIS_ADDRESS: 'redis:6379'
+      REDIS_ADDRESS: redis:6379
+    depends_on:
+      - redis
 
   currency-frontend:
     image: webdevtoolsandtech/currency-frontend
-    ports: ["80"]
     
   currency-backend:
     image: webdevtoolsandtech/currency-backend
-    ports: ["80"]
+    ports: 
+      - "3000:80"
     environment:
-      REDIS_ADDRESS: 'redis:6379'
+      REDIS_ADDRESS: redis:6379
       SESSION_SECRET: 'arieltiki'
-      USER_SERVICE_ADDRESS: 'user-service'
-      FRONTEND_ADDRESS: 'currency-frontend'
-      CALCULATOR_ADDRESS: 'currency-calculator'
+      USER_SERVICE_ADDRESS: user-service:80
+      FRONTEND_ADDRESS: currency-frontend:80
+      CALCULATOR_ADDRESS: calculate:3000
+    depends_on:
+      - redis
+      - calculate
+      - user-service
