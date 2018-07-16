@@ -26,7 +26,7 @@ Run the commands:
     cd Docker
     //To build an image of the calculator we created
     docker build . -t currency-calculator
-    //To run the image as a container on port 3000 - should see 'listening...' //printed in console
+    //To run the image as a container on port 3000 - should see 'listening...' printed in console
     docker run -p 3000:3000 currency-calculator
 
 6. Docker compose:
