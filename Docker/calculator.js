@@ -20,7 +20,7 @@ app.post('/calculate', function(req, res){
 })
 
 //listen to port
-app.listen(3000, () => console.log('listening...'))
+app.listen(3000, () => console.log('NOT listening...'))
 
 //app.listen(process.env.PORT, () => console.log('listening...'))
 //set PORT = 3001
@@ -46,10 +46,11 @@ if(jsonState == null) {
     return jsonState;
 
 }
+
 else if(input === "=") {
     var result = opererations[jsonState.operator](jsonState.leftSide, jsonState.display)
     jsonState.display = result;
-    jsonState.lastState = "";
+    jsonState.lastState = "=";
     jsonState.operator = "";
     jsonState.leftSide = "";
     return jsonState;
@@ -70,7 +71,13 @@ else if(operators.includes(input)) {
 // LAST INPUT WAS OPERATOR
 else if (operators.includes(jsonState.lastState)) {
     jsonState.display = input;
-} else {
+} else if(jsonState.lastState === "=") {
+    jsonState.display = input;
+    jsonState["lastState"] = "";
+    jsonState["leftSide"] = "";
+    jsonState["operator"] = "";
+}
+else{
     // LAST INPUT WAS A NUMBER
     var c = input;
     jsonState.display = jsonState.display.concat(c);
